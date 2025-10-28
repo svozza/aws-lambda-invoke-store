@@ -3,10 +3,22 @@
   "version": "0.1.0",
   "description": "Invoke scoped data storage for AWS Lambda Node.js Runtime Environment",
   "homepage": "https://github.com/awslabs/aws-lambda-invoke-store",
-  "main": "./dist/invoke-store.js",
-  "types": "./dist/invoke-store.d.ts",
+  "main": "./dist/cjs/invoke-store.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/invoke-store.d.ts",
+        "default": "./dist/esm/invoke-store.js"
+      },
+      "require": {
+        "types": "./dist/cjs/invoke-store.d.ts",
+        "default": "./dist/cjs/invoke-store.js"
+      }
+    }
+  },
   "files": [
-    "dist"
+    "dist/esm",
+    "dist/cjs"
   ],
   "repository": {
     "type": "git",
@@ -18,7 +30,9 @@
     "url": "http://aws.amazon.com"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
     "clean": "rm -rf dist",
     "test": "vitest run",
     "test:watch": "vitest watch",
@@ -27,7 +41,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.29.6",
     "@tsconfig/node18": "^18.2.4",
-    "@types/node": "^18.19.112",
+    "@types/node": "^18.19.130",
     "typescript": "~5.4.5",
     "vitest": "^3.1.1"
   },
